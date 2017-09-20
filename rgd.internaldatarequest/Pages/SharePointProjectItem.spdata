@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.Module" DefaultFile="Elements.xml" SupportedTrustLevels="All" SupportedDeploymentScopes="Web, Site" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="Elements.xml" Target="Pages\" Type="ElementManifest" />
+    <ProjectItemFile Source="Default.aspx" Target="Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="listRequests.html" Target="Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="reviewRequest.html" Target="Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="editRequest.html" Target="Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="addRequest.html" Target="Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="releaseData.html" Target="Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="templates\dirPagination.tpl.html" Target="Pages\templates\" Type="ElementFile" />
+    <ProjectItemFile Source="dashboard.html" Target="Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="report.html" Target="Pages\" Type="ElementFile" />
+  </Files>
+</ProjectItem>

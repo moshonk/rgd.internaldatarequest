@@ -1,0 +1,118 @@
+﻿<form class="form" novalidate>
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend> <span class="glyphicon glyphicon-flag"></span> Flag Data Release</legend>
+
+        <div class="col-md-6 row">
+            <div class="col-md-12">Requestor</div>
+            <div class="col-md-12">
+                <div class="well well-sm"><strong>{{request.requestor}}</strong></div>
+            </div>
+        </div>
+
+        <div class="col-md-6 row">
+            <div class="col-md-12">Request Date</div>
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <strong>{{request.requestDate}}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 row">
+            <div class="col-md-12">Investigator/Institution</div>
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <strong>{{request.investigator}}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 row">
+            <div class="col-md-12">Protocol SSC No</div>
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <strong>{{request.protocolSSCNo}}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 row">
+            <div class="col-md-12">Data Request Description</div>
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <strong>{{request.description}}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 row">
+            <div class="col-md-12">Date Approved</div>
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <strong>{{request.requestApprovalDate}}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 row">
+            <div class="col-md-12">Approved By</div>
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <strong>{{request.requestApprover}}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 row">
+            <div class="col-md-12">Approver Comments</div>
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <strong>{{request.requestApproverComments}}</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group col-md-6 row">
+            <label class="col-md-12" for="dataReleaseDate">Data release date</label>
+            <div class="col-md-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <input id="dataReleaseDate" name="dataReleaseDate" type="text" placeholder="Data release date" class="form-control input" required="" data-ng-model="request.dataReleaseDate">
+                </div>
+                <span class="help-block">Date when data was released</span>
+            </div>
+        </div>
+
+        <!-- File input-->
+        <div class="form-group col-md-6 row">
+            <label class="col-md-12" for="dataReleaseAttachment">Attachment</label>
+            <div class="col-md-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-paperclip"></i></span>
+                    <input id="dataReleaseAttachment" name="dataReleaseAttachment" type="file" placeholder="Attachment" class="form-control input-file" required="" data-ng-model="request.dataReleaseAttachment">
+                </div>
+                <span class="help-block">Attach a file. (Word and pdf documents accepted)</span>
+            </div>
+        </div>
+
+        <div class="form-group col-md-12 row">
+            <label class="col-md-12" for="save">Comments</label>
+            <div class="col-md-12">
+                <textarea class="form-control" placeholder="Please enter your comments regarding this request" data-ng-model="request.dataReleaserComments">{{request.dataReleaserComments}}</textarea>
+            </div>
+        </div>
+
+        <!-- Button (Double) -->
+        <div class="form-group row">
+            <label class="col-md-4 control-label" for="update"></label>
+            <div class="col-md-8">
+                <button id="update" name="update" class="btn btn-info" data-ng-click="updateStatus()">Update Data release status</button>
+                <button id="Cancel" name="Cancel" class="btn btn-success" data-ng-click="cancel()">Close</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>

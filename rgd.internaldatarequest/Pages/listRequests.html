@@ -1,0 +1,61 @@
+﻿<div id="filter-options" class="col-sm-12">
+</div>
+<div class="row hidden-sm hidden-xs">
+    <ul class="nav nav-list">
+        <li><a href="{{ hostWebUrl }}" target="_parent"><span class="glyphicon glyphicon-home glyphicon-5x"></span>&nbsp;&nbsp;Back to Team Site</a></li>
+    </ul>
+</div>
+<div class="row">
+    <div class="col-sm-4">
+        <h2>Requests</h2>
+
+    </div>
+    <div class="col-sm-4">
+        <label for="search">Search:</label>
+        <input ng-model="q" id="search" class="form-control" placeholder="Filter text">
+    </div>
+    <div class="col-sm-4 hidden-xs">
+        <label for="search">Items per page:</label>
+        <input type="number" min="1" max="100" class="form-control" ng-model="pageSize">
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="align-right">&nbsp;
+        <button class="btn btn-primary btn-sm" ng-csv="requests" ng-click="exportDataToCsv()" filename="requests.export_{{date | date: 'yyyy-MM-dd hhmmss'}}.csv" csv-header="getHeader()" field-separator=","><span class="glyphicon glyphicon-download"></span>&nbsp;Download CSV</button>
+    </div>
+    <table data-ng-table="tableParams" class="table table-stripped table-bordered table-hover" id="tbl">
+        <thead>
+            <tr>
+                <th>Request Date</th>
+                <th class="hidden-xs">Requestor</th>
+                <th class="hidden-xs hidden-sm">Request Type</th>
+                <th class="hidden-xs">Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--<tr data-ng-repeat="request in requests | filter: {investigator: 'ED'} && {requestor: user.id} || ''">-->
+            <tr dir-paginate="request in requests | filter: (!permissions.review && !permissions.releaseData) && {requestor: user.id} || '' | filter: q  | orderBy : '-requestDate' | itemsPerPage: pageSize" current-page="currentPage">
+                <td>{{request.requestDate}}</td>
+                <td class="hidden-xs">{{request.requestorName}}</td>
+                <td class="hidden-xs hidden-sm">{{request.requestType}}</td>
+                <td class="hidden-xs"><span class="label label-{{request.labelCss}}">{{request.requestStatus}}</span></td>
+                <td>
+                    <div class="btn-group">
+                        <button class="btn btn-xs btn-info">Action</button>
+                        <button class="btn btn-xs dropdown-toggle btn-info" data-toggle="dropdown"><span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li data-ng-click="getRequest(request.id, 'edit')" data-ng-show="request.requestor === user.id && request.requestStatus == 'Pending'"><a><span class="glyphicon glyphicon-pencil"></span> Edit</a></li>
+                            <li data-ng-click="getRequest(request.id, 'review')" data-ng-show="permissions.review && request.requestor !== user.id"><a><span class="glyphicon glyphicon-align-justify"></span> Review</a></li>
+                            <li data-ng-click="getRequest(request.id, 'flagDataRelease')" data-ng-show="permissions.releaseData && request.requestStatus == 'Approved'"><a><span class="glyphicon glyphicon-ok"></span> Flag data release</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="col-sm-12">
+    <dir-pagination-controls boundary-links="true" template-url="templates/dirPagination.tpl.html"></dir-pagination-controls>
+</div>

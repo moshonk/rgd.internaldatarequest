@@ -1,0 +1,110 @@
+﻿<form class="form-horizontal" novalidate>
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend>Add Request</legend>
+        <div class="col-md-6">
+            <!-- Select Basic -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="requestType">Request Type</label>
+                <div class="col-md-4">
+                    <select id="requestType" name="requestType" class="form-control" data-ng-model="request.requestType">
+                        <option value="Internal">Internal</option>
+                        <option value="External">External</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Multiple Radios -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="approvedProtocol">Is this request covered by objectives of an approved protocol?</label>
+                <div class="col-md-4">
+                    <div class="radio">
+                        <label for="approvedProtocol-0">
+                            <input type="radio" name="approvedProtocol" id="approvedProtocol-0" value="Yes" data-ng-model="request.objectivesCovered">
+                            Yes
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label for="approvedProtocol-1">
+                            <input type="radio" name="approvedProtocol" id="approvedProtocol-1" value="No" data-ng-model="request.objectivesCovered">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div data-ng-show="request.objectivesCovered == 'Yes'">
+                <!-- Text input-->
+                <div class="form-group approved-protocol">
+                    <label class="col-md-4 control-label" for="approvedProtocolTitle">Protocol Title</label>
+                    <div class="col-md-4">
+                        <input id="approvedProtocolTitle" name="approvedProtocolTitle" type="text" placeholder="Protocol Title" class="form-control input-md" data-ng-model="request.approvedProtocolTitle">
+                        <span class="help-block">Protocol Title</span>
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="approvedProtocolSSCNo">Protocol SSC No</label>
+                    <div class="col-md-4">
+                        <input id="approvedProtocolSSCNo" name="approvedProtocolSSCNo" type="text" placeholder="Protocol SSC No" class="form-control input-md" data-ng-model="request.approvedProtocolSSCNo">
+                        <span class="help-block">Protocol SSC No</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Multiple Radios -->
+        <div class="form-group col-md-6">
+            <label class="col-md-12 control-label" for="surveillanceData">Is this request for surveillance data?</label>
+            <div class="col-md-12">
+                <div class="radio-inline">
+                    <label for="surveillanceData-0">
+                        <input type="radio" name="surveillanceData" id="surveillanceData-0" value="Yes" data-ng-model="request.requestForSurveillanceData">
+                        Yes
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label for="surveillanceData-1">
+                        <input type="radio" name="surveillanceData" id="surveillanceData-1" value="No" data-ng-model="request.requestForSurveillanceData">
+                        No
+                    </label>
+                </div>
+                <span class="help-block">Surveillance data?</span>
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="principalInvestigator">Investigator</label>
+                <div class="col-md-4">
+                    <input id="principalInvestigator" name="principalInvestigator" type="text" placeholder="Investigator" class="form-control input-md" data-ng-model="request.principalInvestigator">
+                    <span class="help-block">Investigator</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="estEndDateDataUse">Estimated End Date Data Use</label>
+                <div class="col-md-4">
+                    <input id="estEndDateDataUse" name="estEndDateDataUse" type="text" placeholder="Estimated End Date Data Use" class="form-control input-md" required="" data-ng-model="request.estEndDateDataUse">
+                    <span class="help-block">Estimated End Date Data Use</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button (Double) -->
+        <div class="form-group col-md-12">
+            <label class="col-md-4 control-label" for="save"></label>
+            <div class="col-md-8">
+                <button id="save" name="save" class="btn btn-info" data-ng-click="saveRequest()" data-ng-disabled="request.agreeTermsAndConditions=='No' || request.agreeTermsAndConditions==null || request.agreeTermsAndConditions=='' || request.requestType=='' || request.principalInvestigator=='' || requestdataUseDescription==''">Save</button>
+                <button id="Cancel" name="Cancel" class="btn btn-success" data-ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>

@@ -1,0 +1,100 @@
+﻿<form class="form-horizontal" novalidate>
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend>  Review Data Request</legend>
+
+        <div class="col-md-12 row">
+            <div class="col-md-10"></div>
+            <div class="col-md-1">
+                <span class="label label-xs label-{{request.labelCss}}">{{request.requestStatus}}</span>
+            </div>
+        </div>
+
+        <div class="col-md-6 row">
+            <div class="col-md-12">Requestor</div>
+            <div class="col-md-12">
+                <div class="well well-sm"><strong>{{request.requestorName}}</strong></div>
+            </div>
+        </div>
+
+        <div class="col-md-6 row">
+            <div class="col-md-12">Request Date</div>
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <strong>{{request.requestDate}}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 row">
+            <div class="col-md-12">Investigator/Institution</div>
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <strong>{{request.investigator}}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 row" data-ng-show="request.requestBelongToApprovedProtocol == 'Yes'">
+            <div class="col-md-12">Protocol SSC No</div>
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <strong>{{request.protocolSSCNo}}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 row" data-ng-show="request.requestBelongToApprovedProtocol == 'Yes'">
+            <div class="col-md-12">Protocol Title</div>
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <strong>{{request.protocolTitle}}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 row" data-ng-show="request.requestBelongToApprovedProtocol == 'Yes'">
+            <div class="col-md-12">Protocol Approval Date</div>
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <strong>{{request.protocolApprovalDate}}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 row">
+            <div class="col-md-12">Data Request Description</div>
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <p ng-bind-html="request.description"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group col-md-12 row" data-ng-show="request.attachments">
+            <div data-ng-repeat="attachment in request.attachmentFiles.results">
+                <div class="col-md-6">Attachment</div> <div class="col-md-6"><a href="{{attachment.ServerRelativeUrl}}">{{attachment.FileName}}</a></div>
+            </div>
+
+        </div>
+
+        <div class="form-group col-md-12 row">
+            <label class="col-md-12" for="save">Comments</label>
+            <div class="col-md-12">
+                <textarea class="form-control" placeholder="Please enter your comments regarding this request" data-ng-model="request.requestApproverComments">{{request.requestApproverComments}}</textarea>
+            </div>
+        </div>
+
+        <!-- Button (Double) -->
+        <div class="form-group row">
+            <label class="col-md-4 control-label" for="save"></label>
+            <div class="col-md-8">
+                <button id="save" name="save" class="btn btn-info" data-ng-click="updateStatus('Approved')">Approve</button>
+                <button id="reject" name="save" class="btn btn-warning" data-ng-click="updateStatus('Rejected')">Reject</button>
+                <button id="Cancel" name="Cancel" class="btn btn-success" data-ng-click="cancel()">Close</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>

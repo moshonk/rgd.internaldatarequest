@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Images">
+    <File Path="Images\AppIcon.png" Url="Images/AppIcon.png" ReplaceContent="TRUE" />
+    <File Path="Images\kwtrp_logos_rs_rge_bw.png" Url="Images/kwtrp_logos_rs_rge_bw.png" ReplaceContent="TRUE" />
+    <File Path="Images\giphy.gif" Url="Images/giphy.gif" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

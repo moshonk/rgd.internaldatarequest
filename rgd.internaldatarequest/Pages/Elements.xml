@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Pages">
+    <File Path="Pages\Default.aspx" Url="Pages/Default.aspx" ReplaceContent="TRUE" />
+    <File Path="Pages\listRequests.html" Url="Pages/listRequests.html" ReplaceContent="TRUE" />
+    <File Path="Pages\reviewRequest.html" Url="Pages/reviewRequest.html" ReplaceContent="TRUE" />
+    <File Path="Pages\editRequest.html" Url="Pages/editRequest.html" ReplaceContent="TRUE" />
+    <File Path="Pages\addRequest.html" Url="Pages/addRequest.html" ReplaceContent="TRUE" />
+    <File Path="Pages\releaseData.html" Url="Pages/releaseData.html" ReplaceContent="TRUE" />
+    <File Path="Pages\templates\dirPagination.tpl.html" Url="Pages/templates/dirPagination.tpl.html" ReplaceContent="TRUE" />
+    <File Path="Pages\dashboard.html" Url="Pages/dashboard.html" ReplaceContent="TRUE" />
+    <File Path="Pages\report.html" Url="Pages/report.html" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

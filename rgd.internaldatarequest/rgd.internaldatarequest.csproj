@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EF379C4C-92E6-4EAF-B60E-B80E4A2F6533}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>rgd.internaldatarequest</RootNamespace>
+    <AssemblyName>internaldatarequest</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetOfficeVersion>15.0</TargetOfficeVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <MinimumOfficeToolsVersion>11.1</MinimumOfficeToolsVersion>
+    <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
+    <ProjectMode>SharePointApp</ProjectMode>
+    <AppFeaturePartId>{99d4fa11-5267-4d23-8cf8-802f1e347315}</AppFeaturePartId>
+    <WspPartId>{22948eaa-88f3-4029-9065-3e9bb48d5ee9}</WspPartId>
+    <WorkflowPartId>{ba8af138-1f5f-423a-971e-c40ad2c0f082}</WorkflowPartId>
+    <CspkgPartId>{44b119d4-3e39-49cb-ba3d-ab6b2ab9887e}</CspkgPartId>
+    <SqlPackagePartId>{ae252d13-792d-47ab-bcce-9bb2c9acfe05}</SqlPackagePartId>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Content\css\sp-peoplepicker.min.css" />
+    <Content Include="Scripts\sp-peoplepicker.js" />
+    <Content Include="Scripts\sp-peoplepicker.min.js" />
+    <Content Include="Webpart\InternalDataRequestsWebPart\Elements.xml">
+      <OpcRelationship>feature-elementmanifest</OpcRelationship>
+    </Content>
+    <None Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <None Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Features\Feature2\Feature2.feature">
+      <FeatureId>{42c0a1c0-6181-47ef-bb8d-501381277284}</FeatureId>
+    </None>
+    <None Include="Lists\DataRequestList\DataRequestListInstance\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{f4952134-bb3a-4028-be3e-961eba820acd}</SharePointProjectItemId>
+    </None>
+    <None Include="Lists\DataRequestList\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{c8e71ba8-fd23-4339-9472-f049de869162}</SharePointProjectItemId>
+    </None>
+    <None Include="Lists\RequestType\RequestTypeInstance\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{0adff307-c682-43f1-923f-8dc2551959af}</SharePointProjectItemId>
+    </None>
+    <None Include="Lists\RequestType\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{96dccbb7-e408-4768-b9c7-c4fe0e0a77d0}</SharePointProjectItemId>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Pages\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{f1fb68de-f221-4b05-befe-e2fb9f95cca8}</SharePointProjectItemId>
+    </None>
+    <Content Include="Content\css\datepicker.min.css" />
+    <Content Include="Content\css\bootstrap-theme-3.3.6.min.css" />
+    <Content Include="Content\css\bootstrap.min-3.3.6.css" />
+    <Content Include="Content\css\treasure-overlay-spinner.css" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Elements.xml" />
+    <Content Include="Features\Feature2\Feature2.Template.xml">
+      <DependentUpon>Feature2.feature</DependentUpon>
+    </Content>
+    <Content Include="Images\giphy.gif" />
+    <Content Include="Images\kwtrp_logos_rs_rge_bw.png" />
+    <Content Include="Lists\DataRequestList\DataRequestListInstance\Elements.xml" />
+    <Content Include="Lists\DataRequestList\Elements.xml" />
+    <Content Include="Lists\DataRequestList\Schema.xml" />
+    <Content Include="Lists\RequestType\Elements.xml" />
+    <Content Include="Lists\RequestType\RequestTypeInstance\Elements.xml" />
+    <Content Include="Lists\RequestType\Schema.xml" />
+    <Content Include="Pages\addRequest.html" />
+    <Content Include="Pages\dashboard.html" />
+    <Content Include="Pages\editRequest.html" />
+    <Content Include="Pages\Elements.xml" />
+    <Content Include="Pages\Default.aspx" />
+    <Content Include="Pages\report.html" />
+    <Content Include="Scripts\flot\0.8.3\jquery.flot.resize.min.js" />
+    <None Include="SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{2e65656e-be6c-4547-9f87-4312ea442315}</SharePointProjectItemId>
+    </None>
+    <None Include="Webpart\InternalDataRequestsWebPart\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{97ca4a3d-4f9e-451a-9340-4b1a1c0b2639}</SharePointProjectItemId>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\angular.min.js.map" />
+    <None Include="Scripts\jquery-1.9.1.min.map" />
+    <None Include="Scripts\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{ae252d13-792d-47ab-bcce-9bb2c9acfe05}</SharePointProjectItemId>
+    </None>
+    <Content Include="Pages\listRequests.html" />
+    <Content Include="Pages\releaseData.html" />
+    <Content Include="Pages\reviewRequest.html" />
+    <Content Include="Pages\templates\dirPagination.tpl.html" />
+    <Content Include="Scripts\angular-flot.js" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-route-1.3.14.min.js" />
+    <Content Include="Scripts\angular-1.4.8.min.js" />
+    <Content Include="Scripts\angular-sanitize.js" />
+    <Content Include="Scripts\angular-ui-form-validation.js" />
+    <Content Include="Scripts\angular.intellisense.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\bootstrap-3.3.6.min.js" />
+    <Content Include="Scripts\bootstrap-datepicker.js" />
+    <Content Include="Scripts\Elements.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Scripts\App.js" />
+    <Content Include="Scripts\flot\0.8.3\jquery.flot.categories.min.js" />
+    <Content Include="Scripts\flot\0.8.3\jquery.flot.pie.min.js" />
+    <Content Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery-plugins\bootstrap-table.js" />
+    <Content Include="Scripts\jquery.flot.js" />
+    <Content Include="Scripts\jquery-plugins\bootstrap-table-export.js" />
+    <Content Include="Scripts\jquery-plugins\tableExport.min.js" />
+    <Content Include="Scripts\mainApp.js" />
+    <Content Include="Scripts\ng-file-model.js" />
+    <Content Include="Scripts\treasure-overlay-spinner.js" />
+    <Content Include="Scripts\xtForm.tpl.js" />
+    <Content Include="Scripts\_references.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{b3ff5e96-e3af-49f9-aa05-9054a58386f0}</SharePointProjectItemId>
+    </None>
+    <Content Include="Content\Elements.xml" />
+    <Content Include="Content\App.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\AppIcon.png">
+      <OpcRelationship>manifest-icon</OpcRelationship>
+    </Content>
+    <Content Include="Images\Elements.xml" />
+    <None Include="Images\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{3937138e-0a01-4bbe-9aa3-4c2284d09259}</SharePointProjectItemId>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Package\Package.package">
+      <PackageId>{68feb718-be67-42b2-80d2-0c007c44ef3e}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
+    <None Include="Features\Feature1\Feature1.feature">
+      <FeatureId>{f7b8ba10-b5fc-4557-8922-f8d5ed2cd287}</FeatureId>
+    </None>
+    <None Include="Features\Feature1\Feature1.Template.xml">
+      <DependentUpon>Feature1.feature</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <AppManifestFile Include="AppManifest.xml">
+      <SubType>Designer</SubType>
+    </AppManifestFile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\dirPagination.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

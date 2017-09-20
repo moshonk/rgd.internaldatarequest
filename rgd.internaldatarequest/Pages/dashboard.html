@@ -1,0 +1,101 @@
+﻿<div class="row hidden-xs hidden-sm">
+    <ul class="nav nav-list">
+        <li><a href="{{ hostWebUrl }}" target="_parent"><span class="glyphicon glyphicon-home glyphicon-5x"></span>&nbsp;&nbsp;Back to Team Site</a></li>
+    </ul>
+</div>
+<!--<div class="row">
+    <div class="col-md-12"> <h2 class="panel-heading">Summary counts and trends</h2></div>
+</div>-->
+<div class="row">
+    <div class="col-lg-2 col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="glyphicon glyphicon-asterisk gi-3X"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge"> {{ allRequestsCount }} </div>
+                        <div>&nbsp;Total Requests</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-4">
+        <div class="panel panel-red">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="glyphicon glyphicon-time gi-3X"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge"> {{ pendingRequestsCount }}</div>
+                        <div>Pending Requests</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-4">
+        <div class="panel panel-orange">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="glyphicon glyphicon-thumbs-up gi-3X"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge"> {{ dgcVotingRequestsCount }}</div>
+                        <div>DGC Voting</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-4">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="glyphicon glyphicon-ok gi-3X"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge"> {{ approvedRequestsCount }}</div>
+                        <div>Approved Requests</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-4">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="glyphicon glyphicon-hdd gi-3X"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge"> {{ finalizedRequestsCount }}</div>
+                        <div>Finalized Requests</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-4">
+        <div class="panel">
+            <div class="panel-heading">
+                <div class="row">
+                    <img src="../Images/giphy.gif" ng-show="loading"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <flot dataset="dataset" options="options" height="480px"></flot>
+        <div id="legend" style="width: 200px; height: 200px;"></div>
+
+    </div>
+</div>

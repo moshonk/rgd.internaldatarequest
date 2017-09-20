@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<List xmlns:ows="Microsoft SharePoint" Title="DataRequestList" FolderCreation="FALSE" Direction="$Resources:Direction;" Url="Lists/DataRequestList" BaseType="0" xmlns="http://schemas.microsoft.com/sharepoint/">
+  <MetaData>
+    <ContentTypes>
+      
+      
+    <ContentType ID="0x010063bbb26d309c4a2a9874f0aef7bf3ee5" Name="ListFieldsContentType"><FieldRefs><FieldRef ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Name="Title" /><FieldRef ID="{c5371dc3-fba5-48bc-9d8b-0e8c99820a74}" Name="RequestType" /><FieldRef ID="{20c1e132-956f-4f84-8314-365cd74f4abb}" Name="Requestor" /><FieldRef ID="{c02493e1-75f3-4d2f-91c0-3177cb15c336}" Name="ProtocolSSCNo" /><FieldRef ID="{6cefab01-0819-4780-a211-8d694d8a57f8}" Name="ProtocolTitle" /><FieldRef ID="{880798c9-aa08-406d-ad4d-1229058f8e4d}" Name="Investigator" /><FieldRef ID="{c7a3438a-59d6-4460-9986-8733e1eb4a26}" Name="EstEndDateDataUse" /><FieldRef ID="{ccb1815f-68a0-45b5-a549-2c4c5c8d4e35}" Name="RequestStatus" /><FieldRef ID="{94da3057-7175-4544-85a9-01f014a23d90}" Name="RequestApprovalDate" /><FieldRef ID="{53489938-10cb-459f-b93a-a33de9d5e98d}" Name="RequestApprover" /><FieldRef ID="{7310425b-4601-4076-b418-9ca87afd43bf}" Name="RequestApproverComments" /><FieldRef ID="{8c967e0b-0951-4aff-9378-50324abed9e8}" Name="DataReleaseDate" /><FieldRef ID="{6a049ce1-8e55-4ce1-8013-07daf9181c68}" Name="DataReleaser" /><FieldRef ID="{d1c6174a-e1c2-43c9-a90c-2c6848f5041d}" Name="DataReleaserComments" /><FieldRef ID="{aba6c923-35da-46ef-895b-355c35dcd2d2}" Name="RequestDate" /><FieldRef ID="{439ffacb-cbd4-44a2-9b60-b3b998dc9053}" Name="ApprovedProtocol" /><FieldRef ID="{7ead613a-a772-4a53-83e9-556a6149c376}" Name="AgreeTermsAndConditions" /></FieldRefs></ContentType><ContentTypeRef ID="0x01">
+        <Folder TargetName="Item" />
+      </ContentTypeRef><ContentTypeRef ID="0x0120" /></ContentTypes>
+    <Fields>
+      
+    <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="$Resources:core,Title;" Required="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" /><Field Name="RequestType" ID="{c5371dc3-fba5-48bc-9d8b-0e8c99820a74}" DisplayName="RequestType" Type="Choice" Required="TRUE"><CHOICES><CHOICE>Internal</CHOICE><CHOICE>External</CHOICE></CHOICES></Field><Field Name="Requestor" ID="{20c1e132-956f-4f84-8314-365cd74f4abb}" DisplayName="Requestor" Type="User" List="UserInfo" UserSelectionMode="PeopleOnly" Required="TRUE" /><Field Name="ProtocolSSCNo" ID="{c02493e1-75f3-4d2f-91c0-3177cb15c336}" DisplayName="ProtocolSSCNo" Type="Number" /><Field Name="ProtocolTitle" ID="{6cefab01-0819-4780-a211-8d694d8a57f8}" DisplayName="ProtocolTitle" Type="Text" /><Field Name="Investigator" ID="{880798c9-aa08-406d-ad4d-1229058f8e4d}" DisplayName="Investigator" Type="Text" /><Field Name="EstEndDateDataUse" ID="{c7a3438a-59d6-4460-9986-8733e1eb4a26}" DisplayName="EstEndDateDataUse" Type="DateTime" /><Field Name="RequestStatus" ID="{ccb1815f-68a0-45b5-a549-2c4c5c8d4e35}" DisplayName="RequestStatus" Type="Choice"><CHOICES><CHOICE>Pending</CHOICE><CHOICE>Approved</CHOICE><CHOICE>Rejected</CHOICE><CHOICE>No Data</CHOICE><CHOICE>Data Released</CHOICE></CHOICES></Field><Field Name="RequestApprovalDate" ID="{94da3057-7175-4544-85a9-01f014a23d90}" DisplayName="RequestApprovalDate" Type="DateTime" /><Field Name="RequestApprover" ID="{53489938-10cb-459f-b93a-a33de9d5e98d}" DisplayName="RequestApprover" Type="User" List="UserInfo" UserSelectionMode="PeopleOnly" /><Field Name="RequestApproverComments" ID="{7310425b-4601-4076-b418-9ca87afd43bf}" DisplayName="RequestApproverComments" Type="Note" RichText="TRUE" /><Field Name="DataReleaseDate" ID="{8c967e0b-0951-4aff-9378-50324abed9e8}" DisplayName="DataReleaseDate" Type="DateTime" /><Field Name="DataReleaser" ID="{6a049ce1-8e55-4ce1-8013-07daf9181c68}" DisplayName="DataReleaser" Type="User" List="UserInfo" UserSelectionMode="PeopleOnly" /><Field Name="DataReleaserComments" ID="{d1c6174a-e1c2-43c9-a90c-2c6848f5041d}" DisplayName="DataReleaserComments" Type="Note" /><Field Name="RequestDate" ID="{aba6c923-35da-46ef-895b-355c35dcd2d2}" DisplayName="RequestDate" Type="DateTime" Format="DateOnly" /><Field Name="ApprovedProtocol" ID="{439ffacb-cbd4-44a2-9b60-b3b998dc9053}" DisplayName="RequestBelongToApprovedProtocol" Type="Choice"><CHOICES><CHOICE>Yes</CHOICE><CHOICE>No</CHOICE></CHOICES></Field><Field Name="AgreeTermsAndConditions" ID="{7ead613a-a772-4a53-83e9-556a6149c376}" DisplayName="AgreeTermsAndConditions" Type="Choice"><CHOICES><CHOICE>Yes</CHOICE><CHOICE>No</CHOICE></CHOICES></Field></Fields>
+    <Views>
+      
+      
+    <View BaseViewID="0" Type="HTML" MobileView="TRUE" TabularView="FALSE">
+        <Toolbar Type="Standard" />
+        <XslLink Default="TRUE">main.xsl</XslLink>
+        <RowLimit Paged="TRUE">30</RowLimit>
+        <ViewFields>
+          
+        <FieldRef Name="LinkTitleNoMenu"></FieldRef></ViewFields>
+        <Query>
+          <OrderBy>
+            
+          <FieldRef Name="Modified" Ascending="FALSE"></FieldRef></OrderBy>
+        </Query>
+        <ParameterBindings>
+          <ParameterBinding Name="AddNewAnnouncement" Location="Resource(wss,addnewitem)" />
+          <ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" />
+          <ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(wss,noXinviewofY_ONET_HOME)" />
+        </ParameterBindings>
+      </View><View BaseViewID="1" Type="HTML" WebPartZoneID="Main" DisplayName="$Resources:core,objectiv_schema_mwsidcamlidC24;" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" SetupPath="pages\viewpage.aspx" ImageUrl="/_layouts/15/images/generic.png?rev=23" Url="AllItems.aspx">
+        <Toolbar Type="Standard" />
+        <XslLink Default="TRUE">main.xsl</XslLink>
+        <JSLink>clienttemplates.js</JSLink>
+        <RowLimit Paged="TRUE">30</RowLimit>
+        <ViewFields>
+          
+        <FieldRef Name="LinkTitle"></FieldRef><FieldRef Name="RequestType" /><FieldRef Name="Requestor" /><FieldRef Name="ProtocolSSCNo" /><FieldRef Name="ProtocolTitle" /><FieldRef Name="Investigator" /><FieldRef Name="EstEndDateDataUse" /><FieldRef Name="RequestStatus" /><FieldRef Name="RequestApprovalDate" /><FieldRef Name="RequestApprover" /><FieldRef Name="RequestApproverComments" /><FieldRef Name="DataReleaseDate" /><FieldRef Name="DataReleaser" /><FieldRef Name="DataReleaserComments" /><FieldRef Name="RequestDate" /><FieldRef Name="ApprovedProtocol" /><FieldRef Name="AgreeTermsAndConditions" /></ViewFields>
+        <Query>
+          <OrderBy>
+            
+          <FieldRef Name="ID"></FieldRef></OrderBy>
+        </Query>
+        <ParameterBindings>
+          <ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" />
+          <ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(wss,noXinviewofY_DEFAULT)" />
+        </ParameterBindings>
+      </View></Views>
+    <Forms>
+      <Form Type="DisplayForm" Url="DispForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+      <Form Type="EditForm" Url="EditForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+      <Form Type="NewForm" Url="NewForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+    </Forms>
+  </MetaData>
+</List>

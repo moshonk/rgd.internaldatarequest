@@ -1,0 +1,171 @@
+﻿<form xt-form novalidate>
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend>&nbsp; <span class="glyphicon glyphicon-file"></span> New Data Request</legend>
+
+        <div class="panel panel-default row">
+            <div class="panel-heading"><strong>Instructions</strong></div>
+            <div class="panel-body">
+                Please read the agreement statement from the link below:
+
+                <a href="http://baraza1/intranet/sites/default/files/faq/Datasharing/Terms-and-Conditions.pdf" target="_blank">http://baraza1/intranet/sites/default/files/faq/Datasharing/Terms-and-Conditions.pdf</a>
+
+                <p>
+                    Selecting yes, will also confirm that this exact use of data has been approved in the SSC protocol referenced, including:
+                    <ol>
+                        <li>The type of data</li>
+                        <li>The type of analyses</li>
+                        <li>The time frame for data collection and analysis</li>
+                    </ol>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom">
+            <label class="col-md-6 control-label">Data Request Type</label>
+            <div class="col-md-6">
+                <label for="requestType-0" class="radio-inline">
+                    <input type="radio" name="requestType" id="requestType-0" value="Surveillance" data-ng-model="request.requestType">
+                    KIDMS Data
+                </label>
+                <label for="requestType-1" class="radio-inline">
+                    <input type="radio" name="requestType" id="requestType-1" value="Study" data-ng-model="request.requestType">
+                    Study Data
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom" data-ng-show="request.requestType=='Study'">
+            <label class="col-md-6 control-label" for="principalInvestigator">Principal Investigator</label>
+            <div class="col-md-6">
+                <!--<input id="principalInvestigator" name="principalInvestigator" type="text" placeholder="Principal Investigator" class="form-control input-md" data-ng-model="request.principalInvestigator" required>-->
+                 <sp-people-picker name="taskAssignee" id="taskAssignee" ng-model="request.principalInvestigatorObj" min-entries="1" max-entries="1" max-entries-to-show="4" allow-duplicates="false" show-login="true" show-title="true" min-characters="3" app-web-url="appWebUrl" />
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom" data-ng-show="request.requestType=='Study'">
+            <label class="col-md-6 control-label" label-for="associatedStudyTitle">Study Title</label>
+            <div class="col-md-6">
+                <input type="text" name="associatedStudyTitle" id="associatedStudyTitle" class="form-control input-md" placeholder="Title of Study that collected data" data-ng-model="request.associatedStudyTitle">
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom" data-ng-show="request.requestType=='Study'">
+            <label class="col-md-6 control-label" label-for="associatedStudySSCNo">Study Number</label>
+            <div class="col-md-6">
+                <input type="text" name="associatedStudySSCNo" id="associatedStudySSCNo" class="form-control input-md" placeholder="Number of study that collected data" data-ng-model="request.associatedStudySSCNo">
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom" data-ng-show="request.requestType=='Surveillance' || request.requestType=='Study'">
+            <label class="col-md-6 control-label" for="objectivesCovered">Is this request covered by objectives of an approved protocol?</label>
+            <div class="col-md-6">
+                <label for="objectivesCovered-0" class="radio-inline">
+                    <input type="radio" name="objectivesCovered" id="objectivesCovered-0" value="Yes" data-ng-model="request.objectivesCovered">
+                    Yes
+                </label>
+                <label for="objectivesCovered-1" class="radio-inline">
+                    <input type="radio" name="objectivesCovered" id="objectivesCovered-1" value="No" data-ng-model="request.objectivesCovered">
+                    No
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom" data-ng-show="request.objectivesCovered=='Yes'">
+            <label class="col-md-6 control-label" for="approvedProtocolSSCNo">Number of SSC/ERC approved protocol</label>
+            <div class="col-md-6">
+                <input id="approvedProtocolSSCNo" name="approvedProtocolSSCNo" type="text" placeholder="Number of SSC/ERC approved protocol" class="form-control input-md" data-ng-model="request.approvedProtocolSSCNo">
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom" data-ng-show="request.objectivesCovered=='Yes'">
+            <label class="col-md-6 control-label" for="approvedProtocolTitle">Title of SSC/ERC approved Protocol</label>
+            <div class="col-md-6">
+                <input id="approvedProtocolTitle" name="approvedProtocolTitle" type="text" placeholder="Title of SSC/ERC approved Protocol" class="form-control input-md" data-ng-model="request.approvedProtocolTitle">
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom" data-ng-show="request.objectivesCovered=='Yes'">
+            <label class="col-md-6 control-label" for="ApprovedProtocolDate">Date of SSC/ERC Approval</label>
+            <div class="col-md-6">
+                <input id="approvedProtocolDate" name="approvedProtocolDate" type="text" placeholder="Date of SSC/ERC Approval" class="form-control input-md" data-ng-model="request.approvedProtocolDate">
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom" data-ng-show="request.requestType=='Study' || request.objectivesCovered=='No'">
+            <label class="col-md-6">What is the intended data use? </label>
+            <div class="col-md-6">
+                <div class="radio">
+                	<label>
+                		<input type="radio" name="dataUse" id="dataUse-0" value="preliminary-enquiry" data-ng-model="request.intendedDataUse">Preliminary Enquiry
+                	</label>
+                </div>
+                <div class="radio">
+                	<label>
+                		<input type="radio" name="dataUse" id="dataUse-1" value="new-study" data-ng-model="request.intendedDataUse">New Study (Full or pilot)
+                	</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom" data-ng-show="!request.attachments">
+            <label class="col-md-6 control-label" for="attachment">Attachment</label>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-paperclip"></i></span>
+                    <input id="attachment" name="attachment" type="file" placeholder="Attachment" class="form-control input-md file" data-ng-file-model="request.attachment">
+                </div>
+                <span class="help-block">Attach a file. (Only Word and pdf documents accepted)</span>
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom" data-ng-show="request.attachments">
+            <div data-ng-repeat="attachment in request.attachmentFiles.results">
+                <div class="col-md-4"><strong>Attachment</strong></div>
+                <div class="col-md-4"><a href="{{attachment.ServerRelativeUrl}}">{{attachment.FileName}}</a></div>
+                <div class="col-md-4"><a ng-click="removeAttachment()">Remove</a></div>
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom">
+            <label class="col-md-6 control-label" for="dataUseDescription">Data Use Description</label>
+            <div class="col-md-6">
+                <textarea id="dataUseDescription" name="dataUseDescription" type="text" placeholder="Enter a data use description for this request" class="form-control input-md" data-ng-model="request.dataUseDescription" ng-bind-html></textarea>
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom">
+            <label class="col-md-6 control-label" for="estEndDateDataUse">Estimated End Date of Data Use</label>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <input id="estDataUseEndDate" name="estDataUseEndDate" type="text" placeholder="Estimated End Date of Data Use" class="form-control input-md" data-ng-model="request.estDataUseEndDate">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom">
+            <label class="col-md-6 control-label">Have you read, understood and agree with the <em><a href="http://baraza1/intranet/sites/default/files/faq/Datasharing/Terms-and-Conditions.pdf">Terms and Conditions</a></em>?</label>
+            <div class="col-md-6">
+                <label for="approvedProtocol-0" class="radio-inline">
+                    <input type="radio" name="agreeTermsAndConditions" id="agreeTermsAndConditions-0" value="Yes" data-ng-model="request.agreeTermsAndConditions">
+                    Yes
+                </label>
+                <label for="approvedProtocol-1" class="radio-inline">
+                    <input type="radio" name="agreeTermsAndConditions" id="agreeTermsAndConditions-1" value="No" data-ng-model="request.agreeTermsAndConditions">
+                    No
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-md-4 control-label" for="save"></label>
+            <div class="col-md-8">
+                <button id="save" name="save" class="btn btn-info" data-ng-click="saveRequest()" data-ng-disabled="request.agreeTermsAndConditions=='No' || request.agreeTermsAndConditions==null || request.agreeTermsAndConditions=='' || request.requestType=='' || request.principalInvestigator=='' || requestdataUseDescription==''">Save</button>
+                <button id="Cancel" name="Cancel" class="btn btn-success" data-ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>
