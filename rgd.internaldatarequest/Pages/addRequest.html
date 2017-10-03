@@ -9,7 +9,7 @@
             <div class="panel-body">
                 Please read the agreement statement from the link below:
 
-                <a href="http://baraza1/intranet/sites/default/files/faq/Datasharing/Terms-and-Conditions.pdf" target="_blank">http://baraza1/intranet/sites/default/files/faq/Datasharing/Terms-and-Conditions.pdf</a>
+                <a href="http://baraza/sites/doc/ResearchPoliciesAndGuidelines/Data%20Sharing%20Terms-and-Conditions.pdf?Web=1" target="_blank">http://baraza/sites/doc/ResearchPoliciesAndGuidelines/Data%20Sharing%20Terms-and-Conditions.pdf?Web=1</a>
 
                 <p>
                     Selecting yes, will also confirm that this exact use of data has been approved in the SSC protocol referenced, including:
@@ -93,7 +93,7 @@
             </div>
         </div>
 
-        <div class="form-group row border-bottom" data-ng-show="request.requestType=='Study' || request.objectivesCovered=='No'">
+        <div class="form-group row border-bottom" data-ng-show="request.objectivesCovered=='No'">
             <label class="col-md-6">What is the intended data use? </label>
             <div class="col-md-6">
                 <div class="radio">
@@ -129,9 +129,16 @@
         </div>
 
         <div class="form-group row border-bottom">
-            <label class="col-md-6 control-label" for="dataUseDescription">Data Use Description</label>
+            <label class="col-md-6 control-label" for="dataUseDescription">Description of intended Data Use</label>
             <div class="col-md-6">
-                <textarea id="dataUseDescription" name="dataUseDescription" type="text" placeholder="Enter a data use description for this request" class="form-control input-md" data-ng-model="request.dataUseDescription" ng-bind-html></textarea>
+                <textarea id="dataUseDescription" name="dataUseDescription" type="text" placeholder="Enter a description of the intended data use for this request" class="form-control input-md" data-ng-model="request.dataUseDescription" ng-bind-html></textarea>
+            </div>
+        </div>
+
+        <div class="form-group row border-bottom">
+            <label class="col-md-6 control-label" for="dataDescription">Description of Data requested</label>
+            <div class="col-md-6">
+                <textarea id="dataDescription" name="dataDescription" type="text" placeholder="Enter a description of the data being requested" class="form-control input-md" data-ng-model="request.dataDescription" ng-bind-html></textarea>
             </div>
         </div>
 
@@ -146,7 +153,7 @@
         </div>
 
         <div class="form-group row border-bottom">
-            <label class="col-md-6 control-label">Have you read, understood and agree with the <em><a href="http://baraza1/intranet/sites/default/files/faq/Datasharing/Terms-and-Conditions.pdf">Terms and Conditions</a></em>?</label>
+            <label class="col-md-6 control-label">Have you read, understood and agree with the <em><a href="http://baraza1/intranet/sites/default/files/faq/Datasharing/Terms-and-Conditions.pdf" target="_blank">Terms and Conditions</a></em>?</label>
             <div class="col-md-6">
                 <label for="approvedProtocol-0" class="radio-inline">
                     <input type="radio" name="agreeTermsAndConditions" id="agreeTermsAndConditions-0" value="Yes" data-ng-model="request.agreeTermsAndConditions">

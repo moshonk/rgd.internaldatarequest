@@ -1,11 +1,15 @@
-﻿<div class="row hidden-xs hidden-sm">
-    <ul class="nav nav-list">
-        <li><a href="{{ hostWebUrl }}" target="_parent"><span class="glyphicon glyphicon-home glyphicon-5x"></span>&nbsp;&nbsp;Back to Team Site</a></li>
-    </ul>
-</div>
-<!--<div class="row">
+﻿<!--<div class="row">
     <div class="col-md-12"> <h2 class="panel-heading">Summary counts and trends</h2></div>
 </div>-->
+<div class="row hidden-sm hidden-xs">
+    <ul class="nav navbar-nav">
+        <li><a href="{{ hostWebUrl }}" target="_parent"><span class="glyphicon glyphicon-home glyphicon-5x"></span>&nbsp;&nbsp;Back to Team Site</a></li>
+        <li><a href="#dashboard"><span class="glyphicon glyphicon-dashboard"></span>&nbsp;Dashboad</a></li>
+        <li><a href="#listRequests"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;All Requests</a></li>
+        <li><a href="#addRequest"><span class="glyphicon glyphicon-plus-sign glyphicon-5x"></span>&nbsp;New Request</a></li>
+    </ul>
+</div>
+<hr />
 <div class="row">
     <div class="col-lg-2 col-md-4">
         <div class="panel panel-primary">
@@ -94,8 +98,7 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <flot dataset="dataset" options="options" height="480px"></flot>
-        <div id="legend" style="width: 200px; height: 200px;"></div>
-
+        <flot dataset="dataset" options="options" height="350px"></flot>
+        <div id="legend" style="width: 200px; height: 50px;"></div>
     </div>
 </div>

@@ -145,18 +145,6 @@
     <div class="container-fluid">
         <div id="body" data-ng-app="mainApp">
             <div class="col-md-12">
-                <div class="panel panel-info">
-                    <div class="panel-heading">Shortcuts</div>
-                    <div class="panel-body">
-                        <ul class="nav navbar-nav">
-                            <li><a href="#dashboard"><span class="glyphicon glyphicon-dashboard"></span>&nbsp;Dashboad</a></li>
-                            <li><a href="#listRequests"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;All Requests</a></li>
-                            <li><a href="#addRequest"><span class="glyphicon glyphicon-plus-sign glyphicon-5x"></span>&nbsp;New Request</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12">
                 <div id="notification-area">
                 </div>
                 <div class="panel panel-info">

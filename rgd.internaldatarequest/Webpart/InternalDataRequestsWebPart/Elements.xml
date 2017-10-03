@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
-  <ClientWebPart Name="InternalDataRequestsWebPart" Title="Internal data requests web part" Description="Internal data requests web part" DefaultWidth="1080" DefaultHeight="900">
+  <ClientWebPart Name="InternalDataRequestsWebPart" Title="Internal data requests web part" Description="Internal data requests web part" DefaultWidth="1080" DefaultHeight="1200">
 
     <!-- Content element identifies the location of the page that will render inside the client web part
          Properties are referenced on the query string using the pattern _propertyName_

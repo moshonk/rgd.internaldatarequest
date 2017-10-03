@@ -148,7 +148,7 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
                     $http({
                         method: 'GET',
                         url: shptService.appWebUrl + '/_api/SP.AppContextSite(@target)/web/Lists/getByTitle(\'' + dataRequestListTitle + '\')/Items?' +
-                            '$select=Id,Created,DataUseDescription,ApprovedProtocolSSCNo,ApprovedProtocolTitle,PrincipalInvestigatorId,PrincipalInvestigator/Name,PrincipalInvestigator/EMail,PrincipalInvestigator/Title,AssociatedStudyTitle,AssociatedStudySSCNo,DataUseDescription,IntendedDataUse,EstDataUseEndDate,RequestStatus,RequestApprovalDate,RequestApproverId,RequestApproverComments,DataReleaseDate,DataReleaserId,DataReleaserComments,AgreeTermsAndConditions,ObjectivesCovered,RequestType,AuthorId,Author/Name,Author,Author/Title,Attachments,AttachmentFiles' +
+                            '$select=Id,Created,DataUseDescription,DataDescription,ApprovedProtocolSSCNo,ApprovedProtocolTitle,PrincipalInvestigatorId,PrincipalInvestigator/Name,PrincipalInvestigator/EMail,PrincipalInvestigator/Title,AssociatedStudyTitle,AssociatedStudySSCNo,IntendedDataUse,EstDataUseEndDate,RequestStatus,RequestApprovalDate,RequestApproverId,RequestApproverComments,DataReleaseDate,DataReleaserId,DataReleaserComments,AgreeTermsAndConditions,ObjectivesCovered,RequestType,AuthorId,Author/Name,Author,Author/Title,Attachments,AttachmentFiles' +
                             '&$expand=Author,AttachmentFiles,PrincipalInvestigator' +
                              '&' + filterString + '&' +
                             '@target=\'' +
@@ -174,7 +174,6 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
                                 requestDate: $filter('date')(e['Created'], 'yyyy-MM-dd'),
                                 requestor: e['AuthorId'],
                                 requestorName: e.Author.Title,
-                                description: e['DataUseDescription'],
                                 approvedProtocolSSCNo: e['ApprovedProtocolSSCNo'],
                                 approvedProtocolTitle: e['ApprovedProtocolTitle'],
                                 principalInvestigator: e['PrincipalInvestigatorId'],
@@ -183,6 +182,7 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
                                 associatedStudyTitle: e['AssociatedStudyTitle'],
                                 intendedDataUse: e['IntendedDataUse'],
                                 dataUseDescription: e['DataUseDescription'],
+                                dataDescription: e['DataDescription'],
                                 estDataUseEndDate: $filter('date')(e['EstDataUseEndDate'], 'yyyy-MM-dd'),
                                 requestStatus: e['RequestStatus'],
                                 requestApprovalDate: $filter('date')(e['RequestApprovalDate'], 'yyyy-MM-dd'),
@@ -330,6 +330,7 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
                     'Title': 'New Data Request',
                     'RequestType': request.requestType,
                     'DataUseDescription': request.dataUseDescription,
+                    'DataDescription': request.dataDescription,
                     'ApprovedProtocolSSCNo': request.approvedProtocolSSCNo,
                     'ApprovedProtocolTitle': request.approvedProtocolTitle,
                     'ApprovedProtocolDate': request.approvedProtocolDate,
@@ -340,7 +341,9 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
                     'EstDataUseEndDate': request.estDataUseEndDate,
                     'RequestStatus': request.requestStatus,
                     'ObjectivesCovered': request.objectivesCovered,
-                    'RequestType' : request.requestType,
+                    'RequestType': request.requestType,
+                    'RequestorId': request.requestor,
+                    'RequestDate': request.requestDate,
                     'AgreeTermsAndConditions': request.agreeTermsAndConditions,
                     '__metadata': { 'type': shptService.getItemTypeForListName(dataRequestListName) }
                 },
@@ -493,6 +496,7 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
                 {
                     'RequestType': request.requestType,
                     'DataUseDescription': request.dataUseDescription,
+                    'DataDescription': request.dataDescription,
                     'ApprovedProtocolSSCNo': request.approvedProtocolSSCNo,
                     'ApprovedProtocolTitle': request.approvedProtocolTitle,
                     'ApprovedProtocolDate': request.approvedProtocolDate,
@@ -599,36 +603,38 @@ mainApp.controller('AddRequestController', ["$scope", "$location", "shptService"
             if (userId > -1) {
                 $scope.request.principalInvestigator = userId;
             }
+            shptService.getCurrentUser(function (user) {
+                shptService.addRequest({
+                    requestType: $scope.request.requestType,
+                    dataUseDescription: $scope.request.dataUseDescription,
+                    dataDescription: $scope.request.dataDescription,
+                    requestor: user.id,
+                    requestDate: (new Date().toISOString()),
+                    approvedProtocolSSCNo: $scope.request.approvedProtocolSSCNo,
+                    approvedProtocolTitle: $scope.request.approvedProtocolTitle,
+                    principalInvestigator: $scope.request.principalInvestigator,
+                    principalInvestigatorObj: $scope.request.principalInvestigatorObj,
+                    associatedStudyTitle: $scope.request.associatedStudyTitle,
+                    associatedStudySSCNo: $scope.request.associatedStudySSCNo,
+                    approvedProtocolDate: $scope.request.approvedProtocolDate,
+                    intendedDataUse: $scope.request.intendedDataUse,
+                    estDataUseEndDate: $scope.request.estDataUseEndDate,
+                    attachment: $scope.request.attachment,
+                    objectivesCovered: $scope.request.objectivesCovered,
+                    agreeTermsAndConditions: $scope.request.agreeTermsAndConditions,
+                    requestStatus: 'Pending',
+                    labelCss: shptService.getLabelCss('Pending')
+                }, function () {
+                    $('#notification-area').append($('<div/>', { id: 'myAlerts' }).addClass('alert alert-success').append('Request Added Successfully!'));
+                    setTimeout(function () {
+                        $("#myAlerts").fadeTo(3000, 0).slideUp(500, function () {
+                            $(this).alert('close');
+                        });
+                    }, 2000);
+                });
 
-            shptService.addRequest({
-                requestType: $scope.request.requestType,
-                dataUseDescription: $scope.request.dataUseDescription,
-                requestor: $scope.request.requestor,
-                approvedProtocolSSCNo: $scope.request.approvedProtocolSSCNo,
-                approvedProtocolTitle: $scope.request.approvedProtocolTitle,
-                principalInvestigator: $scope.request.principalInvestigator,
-                principalInvestigatorObj: $scope.request.principalInvestigatorObj,
-                associatedStudyTitle: $scope.request.associatedStudyTitle,
-                associatedStudySSCNo: $scope.request.associatedStudySSCNo,
-                approvedProtocolDate: $scope.request.approvedProtocolDate,
-                intendedDataUse: $scope.request.intendedDataUse,
-                estDataUseEndDate: $scope.request.estDataUseEndDate,
-                attachment: $scope.request.attachment,
-                objectivesCovered: $scope.request.objectivesCovered,
-                agreeTermsAndConditions: $scope.request.agreeTermsAndConditions,
-                requestStatus: 'Pending',
-                labelCss: shptService.getLabelCss('Pending')
-            }, function () {
-                $('#notification-area').append($('<div/>', { id: 'myAlerts' }).addClass('alert alert-success').append('Request Added Successfully!'));
-                setTimeout(function () {
-                    $("#myAlerts").fadeTo(3000, 0).slideUp(500, function () {
-                        $(this).alert('close');
-                    });
-                }, 2000);
+                $location.path("/listRequests");
             });
-
-            $location.path("/listRequests");
-
         }, function (error) {
             alert('Unable to add PI');
             console.log(error);
