@@ -1,5 +1,5 @@
-﻿var mainApp = angular.module('mainApp', ['ngRoute', 'ngSanitize', 'angularUtils.directives.dirPagination', 'ng-file-model', 'angular-flot', 'sp-peoplepicker']);
-mainApp.config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
+﻿var mainApp = angular.module('mainApp', ['ngRoute', 'ngSanitize', 'angularUtils.directives.dirPagination', 'ng-file-model', 'angular-flot', 'sp-peoplepicker', 'ng.httpLoader']);
+mainApp.config(['$routeProvider', '$httpProvider', 'httpMethodInterceptorProvider', function ($routeProvider, $httpProvider, httpMethodInterceptorProvider) {
     $routeProvider.
 
     when('/addRequest', {
@@ -41,11 +41,13 @@ mainApp.config(['$routeProvider', '$httpProvider', function ($routeProvider, $ht
         redirectTo: '/dashboard'
     });
 
+    httpMethodInterceptorProvider.whitelistLocalRequests();
+
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 }]);
 
-mainApp.service('fileService', function (fileService) {
+mainApp.service('fileService', [function (fileService) {
     var fileService = {};
 
     fileService.getFile = function (obj) {
@@ -70,14 +72,12 @@ mainApp.service('fileService', function (fileService) {
     }
 
     return fileService;
-});
+}]);
 
-mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($rootScope, $http, $filter) {
-    var shptService = {};
-    var dataRequestListName = 'InternalDataRequest';
-    var dataRequestListTitle = 'Internal Data Request List';
+mainApp.factory('utilService', ['$log', '$q', function ($log, $q) {
+    var utilService = {};
     //utility function to get parameter from query string
-    shptService.getQueryStringParameter = function (urlParameterKey) {
+    utilService.getQueryStringParameter = function (urlParameterKey) {
         var params = document.URL.split('?')[1].split('&');
         var strParams = '';
         for (var i = 0; i < params.length; i = i + 1) {
@@ -85,32 +85,48 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
             if (singleParam[0] == urlParameterKey)
                 return singleParam[1];
         }
-    }
-    shptService.appWebUrl = decodeURIComponent(shptService.getQueryStringParameter('SPAppWebUrl')).split('#')[0];
-    shptService.hostWebUrl = decodeURIComponent(shptService.getQueryStringParameter('SPHostUrl')).split('#')[0];
+    };
 
-    /**
-    form digest operations since we aren't using the SharePoint MasterPage
-    =======================================================================*/
-    var formDigest = null;
-    shptService.ensureFormDigest = function (callback) {
-        $http.post(shptService.appWebUrl + '/_api/contextinfo?$select=FormDigestValue', {}, {
-            headers: {
-                'Accept': 'application/json; odata=verbose',
-                'Content-Type': 'application/json; odata=verbose'
-            }
-        }).success(function (d) {
-            formDigest = d.d.GetContextWebInformation.FormDigestValue;
-            callback(formDigest);
-        }).error(function (er) {
-            alert('Error getting form digest value');
+    utilService.getPrincipalInvestigator = function (request) {
+
+        var deferred = $q.defer();
+
+        var selectedInvestigators = [];
+
+        angular.forEach(request.principalInvestigatorObj, function (value, key) {
+
+            selectedInvestigators.push(value.Email);
+
         });
+
+        if (selectedInvestigators.length == 0) {
+
+            deferred.resolve(-1);
+
+        } else {
+
+            utilService.ensureUser(selectedInvestigators[0]).then(function (userId) {
+
+                deferred.resolve(userId);
+
+            }, function (error) {
+
+                alert('Unable to add PI');
+                $log.error(error);
+                deferred.reject('Unable to add PI. ' + error);
+                return -1;
+
+            });
+
+        }
+
+        return deferred.promise;
     };
 
     /**
-    The ensureUser() function adds the selected user to this site if they don't exsist and returns their user id
+    The ensureUser() function adds the selected user to this site if they don't exist and returns their user id
     =============================================================================================================*/
-    shptService.ensureUser = function (user) { 
+    utilService.ensureUser = function (user) {
         var deferred = $.Deferred();
 
         if (user == undefined) { //If user has not been provided, set the user id to -1.
@@ -131,6 +147,220 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
 
         return deferred.promise();
     }
+
+    utilService.showSuccessMessage = function (domSelector, message) {
+        $(domSelector).append($('<div/>', { id: 'myAlerts' }).addClass('alert alert-success').append(message));
+        setTimeout(function () {
+            $("#myAlerts").fadeTo(3000, 0).slideUp(500, function () {
+                $(this).alert('close');
+            });
+        }, 2000);
+    }
+
+    return utilService;
+}]);
+
+mainApp.factory('crudService', ['$rootScope', '$q', '$http', '$log', '$window', 'utilService', function ($rootScope, $q, $http, $log, $window, utilService) {
+    var crudService = {};
+
+    crudService.appWebUrl = decodeURIComponent(utilService.getQueryStringParameter('SPAppWebUrl')).split('#')[0];
+    crudService.hostWebUrl = decodeURIComponent(utilService.getQueryStringParameter('SPHostUrl')).split('#')[0];
+
+    crudService.getListItems = function (listTitle, queryParams) {
+        return $http({
+            method: 'GET',
+            url: crudService.appWebUrl + '/_api/SP.AppContextSite(@target)/web/Lists/getByTitle(\'' + listTitle + '\')/Items?' + queryParams + '&@target=\'' + crudService.hostWebUrl + '\'',
+            headers: { Accept: 'application/json;odata=verbose' }
+        }).then(function sendResponseData(response) {
+            return response.data.d;
+        }).catch(function handleError(response) {
+            $log.error('http request error: ' + response.status);
+            return $q.reject('Error: ' + response.status);
+        });
+    };
+
+    crudService.getListProperties = function (listTitle, queryParams) {
+        return $http({
+            method: 'GET',
+            url: crudService.appWebUrl + '/_api/SP.AppContextSite(@target)/web/Lists/getByTitle(\'' + listTitle + '\')?' + queryParams + '&@target=\'' + crudService.hostWebUrl + '\'',
+            headers: { Accept: 'application/json;odata=verbose' }
+        }).then(function sendResponseData(response) {
+            return response.data.d;
+        }).catch(function handleError(response) {
+            $log.error('http request error: ' + response.status);
+            return $q.reject('Error: ' + response.status);
+        });
+    };
+
+    crudService.retrieveFormDigest = function () {
+        var contextInfoUri = crudService.appWebUrl + '/_api/contextinfo?$select=FormDigestValue';
+        var deferred = $q.defer();
+
+        $http({
+            url: contextInfoUri,
+            method: "POST",
+            headers: { "Accept": "application/json; odata=verbose" }
+        }).then(function (response) {
+            formDigestValue = response.data.d.GetContextWebInformation.FormDigestValue;
+            deferred.resolve(formDigestValue);
+        }).catch(function (response) {
+            var errMsg = "Error retrieving the form digest value: "
+		                + response.data.error.message.value;
+            $log.error(errMsg);
+            deferred.reject('Error: ' + response.status + '. ' + errMsg);
+        });
+
+        return deferred.promise;
+    }
+
+    crudService.retrieveETagValue = function (operationUri) {
+        var deferred = $q.defer();
+
+        $http({
+            url: operationUri,
+            method: "GET",
+            headers: { "Accept": "application/json; odata=verbose" }
+        }).then(function (response) {
+            eTag = response.data.d.__metadata["etag"];
+            deferred.resolve(eTag);
+        }).catch(function (response) {
+            $log.error(response);
+            var errMsg = "Error retrieving ETag value: "
+		                + response.data.error.message.value;
+            $log.error(errMsg);
+            deferred.reject('Error: ' + response.status + '. ' + errMsg);
+        });
+
+        return deferred.promise;
+    };
+
+    crudService.getListItemEntityTypeFullName = function (listName) {
+        var deferred = $q.defer();
+        crudService.getListProperties(listName, '$select=ListItemEntityTypeFullName').then(function (response) {
+            deferred.resolve(response.ListItemEntityTypeFullName);
+        });
+
+        return deferred.promise;
+    };
+
+    crudService.createNewListItem = function (listTitle, bodyContent) {
+        var operationUri = crudService.appWebUrl + "/_api/web/lists/GetByTitle('" + listTitle + "')/Items" + '?@target=\'' +  crudService.hostWebUrl + '\'';
+        var deferred = $q.defer();
+        crudService.retrieveFormDigest().then(function (formDigestValue) {
+            $http({
+                url: operationUri,
+                method: "POST",
+                headers: {
+                    "Accept": "application/json;odata=verbose",
+                    "Content-Type": "application/json;odata=verbose",
+                    "Content-Length": bodyContent.length,
+                    "X-RequestDigest": formDigestValue,
+                },
+                data: bodyContent
+            }).then(function (response) {
+                deferred.resolve(response);
+            }).catch(function (response) {
+                var errMessage = "Error adding List Item '"
+                    				+ response.data.error.message.value + "'";
+                $log.error(errMessage)
+                deferred.reject('Error: ' + response.status + '. ' + errMessage);
+            })
+        });
+
+        return deferred.promise;
+    }
+
+    crudService.updateListItem = function (listTitle, itemId, bodyContent) {
+        var operationUri = crudService.appWebUrl +
+            "/_api/SP.AppContextSite(@target)/web/lists/GetByTitle('" + listTitle + "')/Items(" + itemId + ")" + '?@target=\'' + crudService.hostWebUrl + '\'';
+        
+        crudService.retrieveFormDigest().then(function (formDigestValue) {
+
+            crudService.retrieveETagValue(operationUri).then(function (eTag) {
+
+                // Invoke the real update operation
+                $http({
+                    url: operationUri,
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json;odata=verbose",
+                        "content-type": "application/json;odata=verbose",
+                        "content-length": bodyContent.length,
+                        "X-RequestDigest": formDigestValue,
+                        "X-HTTP-Method": "MERGE",
+                        "IF-MATCH": eTag
+                    },
+                    data: bodyContent
+                }).then(function (response) {
+                    return response;
+                }).catch(function (response, errorCode, errorMessage) {
+                    var errMsg = "Error updating list item: " + response.data.error.message.value;
+                    $log.error(errMsg);
+                    return $q.reject('Error: ' + response.status + '. ' + errorMessage);
+                });
+            })
+        });
+    }
+
+    crudService.deleteListItem = function (listTitle, itemId, bodyContent) {
+        var operationUri = crudService.appWebUrl + "/_api/SP.AppContextSite(@target)/web/lists/GetByTitle('" + listTitle + "')/Items(" + itemId + ")" + '?@target=\'' + crudService.hostWebUrl + '\'';;
+        var deferred = $q.defer();
+
+        crudService.retrieveFormDigest().then(function (formDigestValue) {
+            crudService.retrieveETagValue(operationUri).then(function (eTag) {
+                $http({
+                    url: operationUri,
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json;odata=verbose",
+                        "content-type": "application/json;odata=verbose",
+                        "X-RequestDigest": formDigestValue,
+                        "X-HTTP-Method": "DELETE",
+                        "IF-MATCH": eTag
+                    }
+                }).then(function (response) {
+                    $log.info('Deleted successfully');
+                    deferred.resolve(response);
+                }).catch(function (response) {
+                    var errMessage = "Error deleting item: '";
+                    +response.data.error.message.value + "'";
+                    deferred.reject('Error: ' + errMessage);
+                });
+            });
+        });
+
+        return deferred.promise;
+    }
+
+    return crudService;
+
+}]);
+
+mainApp.factory('shptService', ['$rootScope', '$http', '$filter', '$log', 'crudService', 'utilService', function ($rootScope, $http, $filter, $log, crudService, utilService) {
+    var shptService = {};
+    var dataRequestListName = 'InternalDataRequest';
+    var dataRequestListTitle = 'Internal Data Request List';
+
+    shptService.appWebUrl = decodeURIComponent(utilService.getQueryStringParameter('SPAppWebUrl')).split('#')[0];
+    shptService.hostWebUrl = decodeURIComponent(utilService.getQueryStringParameter('SPHostUrl')).split('#')[0];
+
+    /**
+    form digest operations since we aren't using the SharePoint MasterPage
+    =======================================================================*/
+    var formDigest = null;
+    shptService.ensureFormDigest = function (callback) {
+        $http.post(shptService.appWebUrl + '/_api/contextinfo?$select=FormDigestValue', {}, {
+            headers: {
+                'Accept': 'application/json; odata=verbose',
+                'Content-Type': 'application/json; odata=verbose'
+            }
+        }).success(function (d) {
+            formDigest = d.d.GetContextWebInformation.FormDigestValue;
+            callback(formDigest);
+        }).error(function (er) {
+            alert('Error getting form digest value');
+        });
+    };
 
     var requests = null;
     var currentUser = null;
@@ -165,7 +395,7 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
                             principalInvestigatorObj.push({
                                 "Login": e['PrincipalInvestigator'].Name,
                                 "Name": e['PrincipalInvestigator'].Title,
-                                "Email": e['PrincipalInvestigator'].Email
+                                "Email": e['PrincipalInvestigator'].EMail
                             });
 
                             requests.push({
@@ -277,7 +507,7 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
                 user.id = d.d.Id;
                 user.groups = d.d.Groups.results;
                 var permissions = {};
-                permissions.review = shptService.userExistInGroup(user, 'Coordinators');
+                permissions.review = shptService.userExistInGroup(user, 'Coordinators,DGC Members');
                 permissions.releaseData = shptService.userExistInGroup(user, 'Data Managers');
                 user.permissions = permissions;
                 callback(user);
@@ -291,7 +521,7 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
     shptService.userExistInGroup = function (user, groupName) {
         var userInGroup = false;
         $.each(user.groups, function () {
-            if (this.LoginName === groupName) {
+            if (groupName.indexOf(this.LoginName) > -1) {
                 userInGroup = true;
                 return false; //break from $each iteration
             }
@@ -321,13 +551,77 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
     };
 
     shptService.addRequest = function (request, callback) {
+        
+        shptService.getCurrentUser(function (user) {
+
+            request.requestorName = user.displayName;
+
+            shptService.ensureFormDigest(function (fDigest) {
+                $http.post(
+                    shptService.appWebUrl + '/_api/SP.AppContextSite(@target)/web/Lists/getByTitle(\'' + dataRequestListTitle + '\')/items?@target=\'' +
+                shptService.hostWebUrl + '\'',
+                    {
+                        'Title': request.requestorName + ' New Data Request',
+                        'RequestType': request.requestType,
+                        'DataUseDescription': request.dataUseDescription,
+                        'DataDescription': request.dataDescription,
+                        'ApprovedProtocolSSCNo': request.approvedProtocolSSCNo,
+                        'ApprovedProtocolTitle': request.approvedProtocolTitle,
+                        'ApprovedProtocolDate': request.approvedProtocolDate,
+                        'PrincipalInvestigatorId': request.principalInvestigator,
+                        'AssociatedStudyTitle': request.associatedStudyTitle,
+                        'AssociatedStudySSCNo': request.associatedStudySSCNo,
+                        'IntendedDataUse': request.intendedDataUse,
+                        'EstDataUseEndDate': request.estDataUseEndDate,
+                        'RequestStatus': request.requestStatus,
+                        'ObjectivesCovered': request.objectivesCovered,
+                        'RequestType': request.requestType,
+                        'RequestorId': request.requestor,
+                        'RequestDate': request.requestDate,
+                        'AgreeTermsAndConditions': request.agreeTermsAndConditions,
+                        '__metadata': { 'type': shptService.getItemTypeForListName(dataRequestListName) }
+                    },
+                    {
+                        headers: {
+                            'Accept': 'application/json; odata=verbose',
+                            'Content-type': 'application/json; odata=verbose',
+                            'X-RequestDigest': fDigest
+                        }
+                    }
+                    ).success(function (d) {
+                        request.id = d.d.ID;
+                        request.requestDate = $filter('date')(d.d.Created, 'yyyy-MM-dd');
+                        request.requestor = d.d.AuthorId;
+                        shptService.getCurrentUser(function (user) {
+                            request.requestorName = user.displayName;
+                        });
+
+                        if (request.attachment) {
+                            shptService.uploadFileToList(request, dataRequestListTitle).then(function () {
+                                console.log(request);
+                            });
+                        }
+
+                        requests.push(request);
+
+                        if (callback) callback();
+                    }).error(function (er) {
+                        alert("Error while adding request " + er);
+                        console.log(er);
+                    });
+            });
+
+        });
+
+    };
+
+    shptService.editRequest = function (request, callback) {
         //ensure form digest
         shptService.ensureFormDigest(function (fDigest) {
             $http.post(
-                shptService.appWebUrl + '/_api/SP.AppContextSite(@target)/web/Lists/getByTitle(\'' + dataRequestListTitle + '\')/items?@target=\'' +
-            shptService.hostWebUrl + '\'',
+                shptService.appWebUrl + '/_api/SP.AppContextSite(@target)/web/Lists/getByTitle(\'' + dataRequestListTitle + '\')/items(' + request.id + ')?@target=\'' +
+                shptService.hostWebUrl + '\'',
                 {
-                    'Title': 'New Data Request',
                     'RequestType': request.requestType,
                     'DataUseDescription': request.dataUseDescription,
                     'DataDescription': request.dataDescription,
@@ -350,29 +644,32 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
                 {
                     headers: {
                         'Accept': 'application/json; odata=verbose',
-                        'Content-type': 'application/json; odata=verbose',
-                        'X-RequestDigest': fDigest
+                        'Content-Type': 'application/json; odata=verbose',
+                        'X-RequestDigest': fDigest,
+                        'X-Http-method': 'MERGE',
+                        'IF-MATCH': '*'
                     }
                 }
                 ).success(function (d) {
-                    request.id = d.d.ID;
-                    request.requestDate = $filter('date')(d.d.Created, 'yyyy-MM-dd');
-                    request.requestor = d.d.AuthorId;
-                    shptService.getCurrentUser(function (user) {
-                        request.requestorName = user.displayName;
-                    });
-
-                    if (request.attachment) {
-                        shptService.uploadFileToList(request, dataRequestListTitle).then(function () {
-                            console.log(request);
-                        });
+                    if (request.principalInvestigator != null) {
+                        shptService.updateTaskAssignee(request);
                     }
 
-                    requests.push(request);
-
-                    if (callback) callback();
+                    if (request.attachment) {
+                        shptService.uploadFileToList(request, dataRequestListTitle).then(function (data) {
+                            if (requests != null) {
+                                $(requests).each(function (i, o) {
+                                    if (o.id === request.id) {
+                                        requests[i] = request;
+                                        return false;
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    callback(request);
                 }).error(function (er) {
-                    alert("Error while adding request " + er);
+                    alert('An error occured while updating the request: ' + er);
                     console.log(er);
                 });
         });
@@ -381,7 +678,8 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
     shptService.uploadFileToList = function (request, listName) {
         var deferred = $.Deferred();
         var file = request.attachment;
-
+        /*$log.info(file);
+        $log.info();*/
         shptService.ensureFormDigest(function (fDigest) {
             shptService.getFileBuffer(file).then(function (buffer) {
                 var bytes = new Uint8Array(buffer);
@@ -395,10 +693,12 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
                     shptService.hostWebUrl + '\'',
                     method: 'POST',
                     binaryStringRequestBody: true,
-                    data: binary,
+                    data: buffer,
+                    processData: false,
+                    transformRequest: angular.identity,
                     headers: {
                         'Accept': 'application/json; odata=verbose',
-                        /*'Content-type': 'application/json; odata=verbose',*/
+                        'Content-type': 'application/json; odata=verbose',
                         'Content-length': buffer.bytelength,
                         'X-RequestDigest': fDigest
                     }
@@ -487,61 +787,6 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
         return deferred.promise();
     }
 
-    shptService.editRequest = function (request, callback) {
-        //ensure form digest
-        shptService.ensureFormDigest(function (fDigest) {
-            $http.post(
-                shptService.appWebUrl + '/_api/SP.AppContextSite(@target)/web/Lists/getByTitle(\'' + dataRequestListTitle + '\')/items(' + request.id + ')?@target=\'' +
-                shptService.hostWebUrl + '\'',
-                {
-                    'RequestType': request.requestType,
-                    'DataUseDescription': request.dataUseDescription,
-                    'DataDescription': request.dataDescription,
-                    'ApprovedProtocolSSCNo': request.approvedProtocolSSCNo,
-                    'ApprovedProtocolTitle': request.approvedProtocolTitle,
-                    'ApprovedProtocolDate': request.approvedProtocolDate,
-                    'PrincipalInvestigatorId': request.principalInvestigator,
-                    'AssociatedStudyTitle': request.associatedStudyTitle,
-                    'AssociatedStudySSCNo': request.associatedStudySSCNo,
-                    'IntendedDataUse': request.intendedDataUse,
-                    'EstDataUseEndDate': request.estDataUseEndDate,
-                    'RequestStatus': request.requestStatus,
-                    'ObjectivesCovered': request.objectivesCovered,
-                    'RequestType': request.requestType,
-                    'AgreeTermsAndConditions': request.agreeTermsAndConditions,
-                    '__metadata': { 'type': shptService.getItemTypeForListName(dataRequestListName) }
-                },
-                {
-                    headers: {
-                        'Accept': 'application/json; odata=verbose',
-                        'Content-Type': 'application/json; odata=verbose',
-                        'X-RequestDigest': fDigest,
-                        'X-Http-method': 'MERGE',
-                        'IF-MATCH': '*'
-                    }
-                }
-                ).success(function (d) {
-
-                    if (request.attachment) {
-                        shptService.uploadFileToList(request, dataRequestListTitle).then(function (data) {
-                            if (requests != null) {
-                                $(requests).each(function (i, o) {
-                                    if (o.id === request.id) {
-                                        requests[i] = request;
-                                        return false;
-                                    }
-                                });
-                            }
-                        });
-                    }
-                    callback(request);
-                }).error(function (er) {
-                    alert('An error occured while updating the request: ' + er);
-                    console.log(er);
-                });
-        });
-    };
-
     shptService.updateRequestStatus = function (request, callback) {
         //Ensure form digest
         shptService.ensureFormDigest(function (fDigest) {
@@ -580,29 +825,54 @@ mainApp.factory('shptService', ['$rootScope', '$http', '$filter', function ($roo
     };
 
     shptService.getItemTypeForListName = function (name) {
-        return "SP.Data." + name.charAt(0).toUpperCase() + name.slice(1) + "ListItem";
+        return "SP.Data." + name.charAt(0).toUpperCase() + name.split(" ").join("").slice(1) + "ListItem";
     };
+
+    shptService.updateTaskAssignee = function (request) {
+        var taskId = -1;
+
+        crudService.getListItems('Workflow Tasks', '$select=*&$orderBy=ID desc&$filter=PercentComplete eq 0').then(function (data) {
+            //Retrieve the task Id for the task associated with this Item
+            
+            $.each(data.results, function (key, value) {
+                var relatedItems = JSON.parse(value.RelatedItems)
+                var relatedItemId = relatedItems[0].ItemId;
+                if (relatedItemId == request.id) {
+                    taskId = value.Id;
+                    return false;
+                }
+
+            });
+
+        }).then(function () {
+            if (taskId > -1) {
+                var userIds = [request.principalInvestigator];
+                crudService.getListItemEntityTypeFullName('Workflow Tasks').then(function (listItemEntityTypeFullName) {
+                    var data = {
+                        'AssignedToId': { 'results': userIds },
+                        '__metadata': { 'type': listItemEntityTypeFullName }
+                    };
+                    crudService.updateListItem('Workflow Tasks', taskId, JSON.stringify(data));
+                });
+            }
+        });
+    }
 
     return shptService;
 }]);
 
-mainApp.controller('AddRequestController', ["$scope", "$location", "shptService", function ($scope, $location, shptService) {
+mainApp.controller('AddRequestController', ["$scope", "$location", "shptService", "utilService", function ($scope, $location, shptService, utilService) {
 
     $scope.saveRequest = function () {
 
         var readyToContinue = false;
         var ayncProcessFailed = false;
 
-        var selectedInvestigators = [];
-        angular.forEach($scope.request.principalInvestigatorObj, function (value, key) {
-            selectedInvestigators.push(value.Email);
-        });
-
-        shptService.ensureUser(selectedInvestigators[0]).then(function (userId) { 
-
+        utilService.getPrincipalInvestigator($scope.request).then(function (userId) {
             if (userId > -1) {
                 $scope.request.principalInvestigator = userId;
             }
+
             shptService.getCurrentUser(function (user) {
                 shptService.addRequest({
                     requestType: $scope.request.requestType,
@@ -625,21 +895,13 @@ mainApp.controller('AddRequestController', ["$scope", "$location", "shptService"
                     requestStatus: 'Pending',
                     labelCss: shptService.getLabelCss('Pending')
                 }, function () {
-                    $('#notification-area').append($('<div/>', { id: 'myAlerts' }).addClass('alert alert-success').append('Request Added Successfully!'));
-                    setTimeout(function () {
-                        $("#myAlerts").fadeTo(3000, 0).slideUp(500, function () {
-                            $(this).alert('close');
-                        });
-                    }, 2000);
+                    utilService.showSuccessMessage('#notification-area', 'Request Added Successfully!');
                 });
 
                 $location.path("/listRequests");
             });
-        }, function (error) {
-            alert('Unable to add PI');
-            console.log(error);
-        });
 
+        });
        
     };
 
@@ -652,7 +914,7 @@ mainApp.controller('AddRequestController', ["$scope", "$location", "shptService"
 
 }]);
 
-mainApp.controller('EditRequestController', ['$scope', '$location', '$routeParams', 'shptService', function ($scope, $location, $routeParams, shptService) {
+mainApp.controller('EditRequestController', ['$scope', '$location', '$routeParams', 'shptService', 'utilService', function ($scope, $location, $routeParams, shptService, utilService) {
 
     var requestIndex = parseInt($routeParams.requestIndex);
     shptService.getRequests(function (data) {
@@ -664,18 +926,24 @@ mainApp.controller('EditRequestController', ['$scope', '$location', '$routeParam
         });
     });
 
-
     $scope.saveRequest = function () {
+        utilService.getPrincipalInvestigator($scope.request).then(function (userId) {
 
-        shptService.editRequest($scope.request, function (request) {
-            $scope.request = request;
-        }, function () {
-            $('#notification-area').append($('<div/>', { id: 'myAlerts' }).addClass('alert alert-success').append('Request Updated Successfully!'));
-            setTimeout(function () {
-                $("#myAlerts").fadeTo(3000, 0).slideUp(500, function () {
-                    $(this).alert('close');
-                });
-            }, 2000);
+            if (userId > -1) {
+
+                $scope.request.principalInvestigator = userId;
+
+            }
+
+            shptService.editRequest($scope.request, function (request) {
+
+                $scope.request = request;
+
+            }, function () {
+
+                utilService.showSuccessMessage('#notification-area', 'Request Updated Successfully!');
+
+            });
 
         });
 
@@ -685,15 +953,20 @@ mainApp.controller('EditRequestController', ['$scope', '$location', '$routeParam
     $scope.removeAttachment = function () {
         
         if (confirm('Are you sure you want to remove this attachment. It will be completely wiped out from the server.')) {
+
             shptService.removeListAttachment($scope.request, function (request) {
+
                 $scope.request = request;
+
             });
         }
 
     };
 
     $scope.cancel = function () {
+
         $location.path('/listRequests');
+
     };
 
     $scope.appWebUrl = shptService.appWebUrl;
@@ -785,9 +1058,25 @@ mainApp.controller('ListRequestsController', ["$scope", "$location", "$filter", 
     $scope.today = $filter('date')(new Date(), 'yyyyMMdd_hhmmss')
 
     $scope.exportDataToCsv = function () {
-        alasql("SELECT requestDate as RequestDate, requestStatus as Status, requestorName as Requestor, principalInvestigator, estDataUseEndDate, objectivesCovered, approvedProtocolSSCNo, approvedProtocolTitle " +
-            "INTO CSV('requestdata_" + $scope.today + ".csv', {headers:true}) FROM ?",
-            [$scope.requests]);
+        alasql.promise("SELECT " +
+                        "requestDate as `Date Of Request`," +
+                        "requestorName as `Requestor`," +
+                        "requestType as `Request Type`," +
+                        "objectivesCovered as `Objectives Covered by Protocol`," +
+                        "intendedDataUse as `Intended Data Use`," +
+                        "estDataUseEndDate as `Est. Data Use End Date`," +
+                        "requestStatus as `Request Status`," +
+                        "requestApprovalDate as `Approval Date`," +
+                        "requestApproverName as `Approver`," +
+                        "dataReleaseDate as `Data Release Date`," +
+                        "dataReleaser as `Data Manager`," +
+                        "attachments as Attachments " +
+            "INTO xlsx('requestdata_" + $scope.today + ".xlsx', {headers:true}) FROM ?",
+            [$scope.requests]).then(function (data) {
+                console.log("Data Saved");
+            }).catch(function (err) {
+                console.log("Saving failed", err);
+            });
     };
 
     $scope.hostWebUrl = shptService.hostWebUrl;

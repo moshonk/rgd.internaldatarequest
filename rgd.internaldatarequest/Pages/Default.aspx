@@ -26,8 +26,10 @@
     <script type="text/javascript" src="../Scripts/jquery.flot.js"></script>
     <script type="text/javascript" src="../Scripts/angular-flot.js"></script>
     <script type="text/javascript" src="../Scripts/sp-peoplepicker.js"></script>
+    <script type="text/javascript" src="../Scripts/angular-http-loader.min.js"></script>
     <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.6/ng-csv.min.js"></script> -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.11.5/xlsx.min.js"></script>
 
 
     <script src="../Scripts/flot/0.8.3/jquery.flot.categories.min.js"></script>
@@ -139,11 +141,40 @@
         .border-bottom {
             border-bottom: 1px solid #f5eaea;
         }
+
+        .flyover .alert {
+            left: 50%;
+            top: 50%;
+            position: fixed;
+            z-index: 1050;
+        }
+
+        .flyover .mask {
+            top: 0;
+            left: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            opacity: 0.5;
+            background: black;
+            z-index: 1049;
+        }
+
+        code {
+            margin: 2em;
+            padding: 0.5em;
+            display: block;
+            background-color: #008fd5;
+            color: white;
+            opacity: 0.6;
+        }
     </style>
 </head>
 <body data-ng-app="mainApp" id="main-content">
     <div class="container-fluid">
         <div id="body" data-ng-app="mainApp">
+            <div ng-http-loader methods="GET" title="Loading. Please wait" template="templates/loader.tpl.html" ttl="0"></div>
+            <div ng-http-loader methods="['POST', 'PUT']" title="Saving. Please wait" template="templates/loader.tpl.html" ttl="5"></div>
             <div class="col-md-12">
                 <div id="notification-area">
                 </div>

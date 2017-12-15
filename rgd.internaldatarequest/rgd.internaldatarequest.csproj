@@ -48,6 +48,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Content\css\sp-peoplepicker.min.css" />
+    <Content Include="Pages\templates\loader.tpl.html" />
+    <Content Include="Scripts\angular-http-loader.js" />
+    <Content Include="Scripts\angular-http-loader.min.js" />
     <Content Include="Scripts\sp-peoplepicker.js" />
     <Content Include="Scripts\sp-peoplepicker.min.js" />
     <Content Include="Webpart\InternalDataRequestsWebPart\Elements.xml">
@@ -131,7 +134,6 @@
     <Content Include="Scripts\Elements.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Scripts\App.js" />
     <Content Include="Scripts\flot\0.8.3\jquery.flot.categories.min.js" />
     <Content Include="Scripts\flot\0.8.3\jquery.flot.pie.min.js" />
     <Content Include="Scripts\jquery-1.9.1.intellisense.js" />

@@ -11,5 +11,6 @@
     <ProjectItemFile Source="templates\dirPagination.tpl.html" Target="Pages\templates\" Type="ElementFile" />
     <ProjectItemFile Source="dashboard.html" Target="Pages\" Type="ElementFile" />
     <ProjectItemFile Source="report.html" Target="Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="templates\loader.tpl.html" Target="Pages\templates\" Type="ElementFile" />
   </Files>
 </ProjectItem>

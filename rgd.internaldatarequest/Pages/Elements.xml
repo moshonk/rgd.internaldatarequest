@@ -10,5 +10,6 @@
     <File Path="Pages\templates\dirPagination.tpl.html" Url="Pages/templates/dirPagination.tpl.html" ReplaceContent="TRUE" />
     <File Path="Pages\dashboard.html" Url="Pages/dashboard.html" ReplaceContent="TRUE" />
     <File Path="Pages\report.html" Url="Pages/report.html" ReplaceContent="TRUE" />
+    <File Path="Pages\templates\loader.tpl.html" Url="Pages/templates/loader.tpl.html" ReplaceContent="TRUE" />
   </Module>
 </Elements>

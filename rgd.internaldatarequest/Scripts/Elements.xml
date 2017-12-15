@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
   <Module Name="Scripts">
-    <File Path="Scripts\App.js" Url="Scripts/App.js" ReplaceContent="TRUE" />
     <File Path="Scripts\jquery-1.9.1.min.map" Url="Scripts/jquery-1.9.1.min.map" ReplaceContent="TRUE" />
     <File Path="Scripts\jquery-1.9.1.min.js" Url="Scripts/jquery-1.9.1.min.js" ReplaceContent="TRUE" />
     <File Path="Scripts\jquery-1.9.1.js" Url="Scripts/jquery-1.9.1.js" ReplaceContent="TRUE" />
@@ -32,5 +31,7 @@
     <File Path="Scripts\treasure-overlay-spinner.js" Url="Scripts/treasure-overlay-spinner.js" ReplaceContent="TRUE" />
     <File Path="Scripts\sp-peoplepicker.min.js" Url="Scripts/sp-peoplepicker.min.js" ReplaceContent="TRUE" />
     <File Path="Scripts\sp-peoplepicker.js" Url="Scripts/sp-peoplepicker.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\angular-http-loader.js" Url="Scripts/angular-http-loader.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\angular-http-loader.min.js" Url="Scripts/angular-http-loader.min.js" ReplaceContent="TRUE" />
   </Module>
 </Elements>

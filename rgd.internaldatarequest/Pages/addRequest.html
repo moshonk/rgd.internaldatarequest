@@ -5,7 +5,10 @@
         <legend>&nbsp; <span class="glyphicon glyphicon-file"></span> New Data Request</legend>
 
         <div class="panel panel-default row">
-            <div class="panel-heading"><strong>Instructions</strong></div>
+            <div class="panel-heading">
+                <strong>Instructions</strong>
+                <a href="http://baraza/sites/doc/Documents/Baraza%202.0%20Internal%20Data%20Request%20Application%20-%20User%20Guide.docx?Web=1" target="_blank" class="pull-right">user guide <i class="glyphicon glyphicon-question-sign"> </i></a>
+            </div>
             <div class="panel-body">
                 Please read the agreement statement from the link below:
 
@@ -23,7 +26,7 @@
         </div>
 
         <div class="form-group row border-bottom">
-            <label class="col-md-6 control-label">Data Request Type</label>
+            <label class="col-md-6 control-label">Data Request Type *</label>
             <div class="col-md-6">
                 <label for="requestType-0" class="radio-inline">
                     <input type="radio" name="requestType" id="requestType-0" value="Surveillance" data-ng-model="request.requestType">
@@ -59,7 +62,7 @@
         </div>
 
         <div class="form-group row border-bottom" data-ng-show="request.requestType=='Surveillance' || request.requestType=='Study'">
-            <label class="col-md-6 control-label" for="objectivesCovered">Is this request covered by objectives of an approved protocol?</label>
+            <label class="col-md-6 control-label" for="objectivesCovered">Is this request covered by objectives of an approved protocol? *</label>
             <div class="col-md-6">
                 <label for="objectivesCovered-0" class="radio-inline">
                     <input type="radio" name="objectivesCovered" id="objectivesCovered-0" value="Yes" data-ng-model="request.objectivesCovered">
@@ -116,7 +119,7 @@
                     <span class="input-group-addon"><i class="glyphicon glyphicon-paperclip"></i></span>
                     <input id="attachment" name="attachment" type="file" placeholder="Attachment" class="form-control input-md file" data-ng-file-model="request.attachment">
                 </div>
-                <span class="help-block">Attach a file. (Only Word and pdf documents accepted)</span>
+                <span class="help-block">Not Mandatory. Ideally, the attachment should contain a list of data variables being requested. (Only Word, pdf and excel documents accepted)</span>
             </div>
         </div>
 
@@ -129,21 +132,21 @@
         </div>
 
         <div class="form-group row border-bottom">
-            <label class="col-md-6 control-label" for="dataUseDescription">Description of intended Data Use</label>
+            <label class="col-md-6 control-label" for="dataUseDescription">Description of intended Data Use *</label>
             <div class="col-md-6">
                 <textarea id="dataUseDescription" name="dataUseDescription" type="text" placeholder="Enter a description of the intended data use for this request" class="form-control input-md" data-ng-model="request.dataUseDescription" ng-bind-html></textarea>
             </div>
         </div>
 
         <div class="form-group row border-bottom">
-            <label class="col-md-6 control-label" for="dataDescription">Description of Data requested</label>
+            <label class="col-md-6 control-label" for="dataDescription">Description of Data requested *</label>
             <div class="col-md-6">
                 <textarea id="dataDescription" name="dataDescription" type="text" placeholder="Enter a description of the data being requested" class="form-control input-md" data-ng-model="request.dataDescription" ng-bind-html></textarea>
             </div>
         </div>
 
         <div class="form-group row border-bottom">
-            <label class="col-md-6 control-label" for="estEndDateDataUse">Estimated End Date of Data Use</label>
+            <label class="col-md-6 control-label" for="estEndDateDataUse">Estimated End Date of Data Use *</label>
             <div class="col-md-6">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
@@ -153,7 +156,7 @@
         </div>
 
         <div class="form-group row border-bottom">
-            <label class="col-md-6 control-label">Have you read, understood and agree with the <em><a href="http://baraza1/intranet/sites/default/files/faq/Datasharing/Terms-and-Conditions.pdf" target="_blank">Terms and Conditions</a></em>?</label>
+            <label class="col-md-6 control-label">Have you read, understood and agree with the <em><a href="http://baraza1/intranet/sites/default/files/faq/Datasharing/Terms-and-Conditions.pdf" target="_blank">Terms and Conditions</a></em>? *</label>
             <div class="col-md-6">
                 <label for="approvedProtocol-0" class="radio-inline">
                     <input type="radio" name="agreeTermsAndConditions" id="agreeTermsAndConditions-0" value="Yes" data-ng-model="request.agreeTermsAndConditions">
