@@ -1083,7 +1083,6 @@ mainApp.controller('ListRequestsController', ["$scope", "$location", "$filter", 
 
 }]);
 
-
 mainApp.controller('ReleaseDataController', ['$scope', '$location', '$routeParams', 'shptService', function ($scope, $location, $routeParams, shptService) {
 
     var requestIndex = parseInt($routeParams.requestIndex);
@@ -1129,6 +1128,7 @@ mainApp.controller('ReleaseDataController', ['$scope', '$location', '$routeParam
 
 }]);
 
+/**/
 mainApp.controller('DashboardController', ['$scope', '$location', 'shptService', function ($scope, $location, shptService) {
 
     var pendingRequests = [];
@@ -1151,7 +1151,9 @@ mainApp.controller('DashboardController', ['$scope', '$location', 'shptService',
 
     $scope.loading = true;
     shptService.getRequests(function (requests) {
-
+        /*
+        * Get the last 12 months in the format yyyy-mm e.g. 2017-Feb
+        **/
         var defaultPeriod = "";
         var months = 12;
         var d = new Date();
